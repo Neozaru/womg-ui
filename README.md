@@ -1,3 +1,17 @@
+# WOMG
+
+Wrapper for OMG Network Token.
+
+Swap your OMG for WOMG on [womg.fi](https://womg.fi).
+
+WOMG contract (mainnet) : [0x90edce4349cf741bb22469efcccda5a54e004d11](https://etherscan.io/address/0x90edce4349cf741bb22469efcccda5a54e004d11)
+
+## Links
+
+WOMG contract code and tests : [BadERC20-Wrappers](https://github.com/Neozaru/BadERC20-Wrappers).
+
+# Create Eth App (project structure) README
+
 This project was bootstrapped with [Create Eth App](https://github.com/paulrberg/create-eth-app).
 
 ## Project Structure

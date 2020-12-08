@@ -126,8 +126,6 @@ export const Swap = function({baseToken, wrapperToken, account}) {
   const [topToken, bottomToken] = mode === WRAP ? [baseToken, wrapperToken] : [wrapperToken, baseToken];
   const [topTokenBalance, bottomTokenBalance] = mode === WRAP ? [balances.baseToken, balances.wrapperToken] : [balances.wrapperToken, balances.baseToken];
 
-  console.log('Render swap')
-
   return (
     <Container>
       <SwapInput 
