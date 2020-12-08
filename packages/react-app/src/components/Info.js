@@ -49,12 +49,15 @@ export const Info = function() {
       <div>UI created using <b>create-eth-app</b> : <Link href="https://github.com/paulrberg/create-eth-app">github.com/paulrberg/create-eth-app</Link></div>
       <div>Contract Code sourced from @adamaid_321's Reddit <Link href="https://www.reddit.com/r/ethtrader/comments/awooqz/womg_added_to_uniswap/">post</Link> and <Link href="https://etherscan.io/address/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2#code">WETH9</Link></div>
       <h3>CONTRACTS</h3>
-      <h4>Homestead (Mainnet)</h4>
+      <div>Homestead (Mainnet)</div>
       <div>OMG (official by OMG Network team) : <Link href="https://etherscan.io/address/0xd26114cd6EE289AccF82350c8d8487fedB8A0C07">0xd26114cd6EE289AccF82350c8d8487fedB8A0C07</Link></div>
       <div>WOMG : <Link href="https://etherscan.io/address/0x90edce4349cf741bb22469efcccda5a54e004d11">0x90edce4349cf741bb22469efcccda5a54e004d11</Link></div>
-      <h4>Kovan (Testnet)</h4>
+      <div>Kovan (Testnet)</div>
       <div>OMG (unofficial for WOMG testing purpose) : <Link href="https://kovan.etherscan.io/address/0x24802a820be79310822e7b55a4bd9c87fa982213">0x24802a820be79310822e7b55a4bd9c87fa982213</Link></div>
       <div>WOMG : <Link href="https://kovan.etherscan.io/address/0xf92df695bc153Fdb7075291E9d83e957a93996AB">0xf92df695bc153Fdb7075291E9d83e957a93996AB</Link></div>
+      <h3>CONTACT</h3>
+      <div>Email : <Link href="mailto:neozaru14@gmail.com">neozaru14@gmail.com</Link></div>
+      <div>Twitter : <Link href="https://twitter.com/Neozaru">@neozaru</Link></div>
     </Container>
   )
 }
