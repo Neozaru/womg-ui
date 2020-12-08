@@ -1,12 +1,17 @@
 {
-  "name": "@project/monorepo",
+  "name": "womg",
   "version": "1.0.0",
   "keywords": [
     "ethereum",
+    "womg",
+    "omg",
+    "omg network",
+    "erc20",
+    "wrapper",
     "react",
-    "workspaces",
     "yarn"
   ],
+  "license": "MIT",
   "private": true,
   "scripts": {
     "subgraph:auth": "yarn workspace @project/subgraph auth",
@@ -27,5 +32,6 @@
     "packages": [
       "packages/*"
     ]
-  }
+  },
+  "devDependencies": {}
 }

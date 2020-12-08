@@ -1,19 +1,29 @@
 {
-  "short_name": "Eth App",
-  "name": "Create Eth App Sample",
+  "short_name": "WOMG",
+  "name": "Wrapper for OMG Network Token",
   "icons": [
     {
       "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
+      "sizes": "256x256 192x192 128x128 64x64 32x32",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "womg128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "womg192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "womg256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "womg512.png",
       "type": "image/png",
       "sizes": "512x512"
     }

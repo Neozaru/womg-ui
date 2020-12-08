@@ -1,24 +1,32 @@
-import React from "react";
-import { Contract } from "@ethersproject/contracts";
-import { getDefaultProvider } from "@ethersproject/providers";
-import { useQuery } from "@apollo/react-hooks";
+import React, { useState } from "react";
 
-import { Body, Button, Header, Image, Link } from "./components";
-import logo from "./ethereumLogo.png";
+import {
+  BrowserRouter,
+  Switch,
+  Route,
+  Link as RouterLink,
+} from "react-router-dom";
+import { Contract } from "@ethersproject/contracts";
+
+import styled from "styled-components";
+
 import useWeb3Modal from "./hooks/useWeb3Modal";
 
 import { addresses, abis } from "@project/contracts";
-import GET_TRANSFERS from "./graphql/subgraph";
+import { Swap } from "./components/Swap";
+import { Info } from "./components/Info";
 
-async function readOnChainData() {
-  // Should replace with the end-user wallet, e.g. Metamask
-  const defaultProvider = getDefaultProvider();
-  // Create an instance of an ethers.js Contract
-  // Read more about ethers.js on https://docs.ethers.io/v5/api/contract/contract/
-  const ceaErc20 = new Contract(addresses.ceaErc20, abis.erc20, defaultProvider);
-  // A pre-defined address that owns some CEAERC20 tokens
-  const tokenBalance = await ceaErc20.balanceOf("0x3f8CB69d9c0ED01923F11c829BaE4D9a4CB6c82C");
-  console.log({ tokenBalance: tokenBalance.toString() });
+import * as web3ModalConfig from "./web3ModalConfig.json";
+
+const config = {
+  tokens: {
+    'OMG': {
+      abi: abis.OMGToken,
+    },
+    'WOMG': {
+      abi: abis.WOMG
+    }
+  }
 }
 
 function WalletButton({ provider, loadWeb3Modal, logoutOfWeb3Modal }) {
@@ -31,44 +39,188 @@ function WalletButton({ provider, loadWeb3Modal, logoutOfWeb3Modal }) {
           logoutOfWeb3Modal();
         }
       }}
+      primary={!!provider}
     >
       {!provider ? "Connect Wallet" : "Disconnect Wallet"}
     </Button>
   );
 }
 
+function isNetworkSupported(network) {
+  return !!addresses[network.chainId];
+}
+
+function getTokenAddress(symbol, network) {
+  return addresses[network.chainId][symbol];
+}
+
+function initToken(symbol, network, provider) {
+  return {
+    symbol,
+    contract: new Contract(getTokenAddress(symbol, network), config.tokens[symbol].abi, provider)
+  }
+}
+
 function App() {
-  const { loading, error, data } = useQuery(GET_TRANSFERS);
-  const [provider, loadWeb3Modal, logoutOfWeb3Modal] = useWeb3Modal();
+  const [provider, loadWeb3Modal, logoutOfWeb3Modal] = useWeb3Modal(web3ModalConfig);
+
+  const [baseToken, setBaseToken] = useState();
+  const [wrapperToken, setWrapperToken] = useState();
+
+  const [network, setNetwork] = useState();
+  const [account, setAccount] = useState();
+
 
   React.useEffect(() => {
-    if (!loading && !error && data && data.transfers) {
-      console.log({ transfers: data.transfers });
+    if (!provider) {
+      console.log('No provider')
+      return;
     }
-  }, [loading, error, data]);
+
+    console.log('Provider detected', provider);
+
+    provider.getNetwork().then(setNetwork);
+    onNewSigner(provider.getSigner());
+
+    provider.provider.on('accountsChanged', () => { // Metamask only
+      const signer = provider.getSigner(); 
+      console.log('Signer changed', signer);
+      onNewSigner(signer);
+    });
+
+    provider.provider.on('chainChanged', (newNetwork, oldNetwork) => { // Metamask only
+      console.log('Network change. Reloading', newNetwork, oldNetwork)
+        window.location.reload();
+    });
+
+  }, [provider]);
+
+  React.useEffect(() => {
+    if (!network) {
+      console.log('Network not initialized.');
+      return;
+    }
+
+    console.log('Network initialized', network);
+    if (!isNetworkSupported(network)) {
+      console.log('Unsupported network', network)
+      return;
+    }
+    setBaseToken(initToken('OMG', network, provider));
+    setWrapperToken(initToken('WOMG', network, provider));
+  }, [network, provider]);
+
+  function onNewSigner(signer) {
+    signer.getAddress().then(accountAddress => {
+      setAccount({
+        address: accountAddress,
+        signer,
+      });
+    });
+  }
 
   return (
-    <div>
-      <Header>
-        <WalletButton provider={provider} loadWeb3Modal={loadWeb3Modal} logoutOfWeb3Modal={logoutOfWeb3Modal} />
-      </Header>
-      <Body>
-        <Image src={logo} alt="react-logo" />
-        <p>
-          Edit <code>packages/react-app/src/App.js</code> and save to reload.
-        </p>
-        {/* Remove the "hidden" prop and open the JavaScript console in the browser to see what this function does */}
-        <Button hidden onClick={() => readOnChainData()}>
-          Read On-Chain Balance
-        </Button>
-        <Link href="https://ethereum.org/developers/#getting-started" style={{ marginTop: "8px" }}>
-          Learn Ethereum
-        </Link>
-        <Link href="https://reactjs.org">Learn React</Link>
-        <Link href="https://thegraph.com/docs/quick-start">Learn The Graph</Link>
-      </Body>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/info">
+          <Header>
+            <RouterLink to="/">
+              <Button>APP</Button>
+            </RouterLink>
+          </Header>
+          <Body>
+            <Info/>
+          </Body>
+        </Route>
+        <Route path="/">
+          <Header>
+            <RouterLink to="/info">
+              <Button>INFO</Button>
+            </RouterLink>
+              <HeaderRight>
+                {network && 
+                  <>
+                    <NetworkName>{`[${network.name}]`}</NetworkName> 
+                    {account.address}
+                  </>
+                }
+                <WalletButton provider={provider} loadWeb3Modal={loadWeb3Modal} logoutOfWeb3Modal={logoutOfWeb3Modal} />
+              </HeaderRight>
+            
+          </Header>
+          <Body>
+            {network
+              ? isNetworkSupported(network) 
+                  ? baseToken && wrapperToken 
+                    ? <Swap baseToken={baseToken} wrapperToken={wrapperToken} account={account}></Swap>
+                    : <div>Loading...</div>
+                  : <div>Unsupported network ({network.name}). Please switch to Kovan or Mainnet</div>
+              : <></>
+            }
+          </Body>
+        </Route>
+      </Switch>
+    </BrowserRouter>
   );
 }
+
+
+
+export const Header = styled.header`
+  background-color: #35353f;
+  min-height: 70px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  color: white;
+  font-family: "MessinaMono",monospace;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const Body = styled.div`
+  align-items: center;
+  background-color: rgb(16, 16, 16);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  font-size: 21px;
+  min-height: calc(100vh - 70px);
+  font-family: "MessinaMono",monospace;
+`;
+
+const NetworkName = styled.span`
+  text-transform: uppercase;
+  margin-right: 5px;
+`;
+  
+const HeaderRight = styled.span`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+`
+
+const Button = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #35353f;
+  text-transform: uppercase;
+  border: 2px solid #585868;
+  font-size: 14px;
+  color: #fff;
+  transition: all .2s ease-in-out;
+  cursor: pointer;
+  text-align: center;
+  margin: 0px 20px;
+  padding: 15px;
+  outline: none;
+
+  ${props => props.hidden && "hidden"} :focus {
+    border: 2px solid white;
+    outline: none;
+  }
+`;
 
 export default App;
