@@ -151,11 +151,15 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   border: 10px;
-  margin: 50px;
+  margin-top: 50px;
   padding: 20px;
   background-color: rgb(42, 41, 46);
   width: 420px;
-  height: 300px;
+  max-height: 300px;
+  @media (max-width: 768px) {
+    width: 90%;
+    padding: 10px;
+  }
 `;
 
 const PrimaryButton = styled.button`

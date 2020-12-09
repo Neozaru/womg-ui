@@ -65,8 +65,12 @@ export const Info = function() {
 
 const Container = styled.div`{
   background-color: rgb(42, 41, 46);
-  width: 800px;
+  max-width: 800px;
   padding: 15px;
+  @media (max-width: 768px) {
+    width: 90%;
+    padding: 10px;
+  }
   margin-top: 15px;
   font-weight: 100;
   font-size: 14px;

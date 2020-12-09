@@ -41,7 +41,7 @@ function WalletButton({ provider, loadWeb3Modal, logoutOfWeb3Modal }) {
       }}
       primary={!!provider}
     >
-      {!provider ? "Connect Wallet" : "Disconnect Wallet"}
+      {!provider ? "Connect" : "Disconnect"}
     </Button>
   );
 }
@@ -139,10 +139,10 @@ function App() {
             </RouterLink>
               <HeaderRight>
                 {network && 
-                  <>
+                  <span>
                     <NetworkName>{`[${network.name}]`}</NetworkName> 
-                    {account.address}
-                  </>
+                    <Address>{account.address}</Address>
+                  </span>
                 }
                 <WalletButton provider={provider} loadWeb3Modal={loadWeb3Modal} logoutOfWeb3Modal={logoutOfWeb3Modal} />
               </HeaderRight>
@@ -193,6 +193,20 @@ const Body = styled.div`
 const NetworkName = styled.span`
   text-transform: uppercase;
   margin-right: 5px;
+  @media (max-width: 768px) {
+    display: none;
+  }
+`;
+
+const Address = styled.span`
+  @media (max-width: 768px) {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 7ch;
+  }
+
 `;
   
 const HeaderRight = styled.span`

@@ -1,14 +1,20 @@
 
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 
+const BALANCE_ACCURACY = 8;
+
 export const SwapInput = function({title, symbol, balance, displayMaxButton, value, onValueChanged}) {
+
+  const roundedBalance = useMemo(() => {
+    return Math.round(balance * Math.pow(10, BALANCE_ACCURACY)) / Math.pow(10, BALANCE_ACCURACY);
+  }, [balance]);
 
   return (
     <Container>
       <InputHeader>
         <span>{title}</span>
-        <span>Balance: {balance}</span>
+        <Balance>Balance: {roundedBalance}</Balance>
       </InputHeader>
       <InputBody>
         <Amount key={title} 
@@ -49,6 +55,11 @@ const InputHeader = styled.div`
   color: #b3b3bf;
 `
 
+const Balance = styled.span`
+  white-space: nowrap;
+  overflow: hidden;
+`
+
 const InputBody = styled.div`
   display: flex;
   justify-content: space-between;
@@ -73,6 +84,7 @@ const Unit = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  padding-left: 0.4em;
 `
 
 const Symbol = styled.div`
