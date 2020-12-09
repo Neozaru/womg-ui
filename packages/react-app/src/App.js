@@ -41,7 +41,7 @@ function WalletButton({ provider, loadWeb3Modal, logoutOfWeb3Modal }) {
       }}
       primary={!!provider}
     >
-      {!provider ? "Connect" : "Disconnect"}
+      {!provider ? "Connect" : "Logout"}
     </Button>
   );
 }
@@ -199,6 +199,7 @@ const NetworkName = styled.span`
 `;
 
 const Address = styled.span`
+  margin-right: 10px;
   @media (max-width: 768px) {
     display: block;
     white-space: nowrap;
@@ -227,7 +228,7 @@ const Button = styled.button`
   transition: all .2s ease-in-out;
   cursor: pointer;
   text-align: center;
-  margin: 0px 20px;
+  margin: 0px 10px;
   padding: 15px;
   outline: none;
 
