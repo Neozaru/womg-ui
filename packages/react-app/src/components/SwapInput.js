@@ -42,7 +42,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   background-color: #35353f;
-  font-family: "MessinaMono",monospace;
 `
 
 const InputHeader = styled.div`

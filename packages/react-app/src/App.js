@@ -174,20 +174,22 @@ export const Header = styled.header`
   align-items: center;
   justify-content: flex-end;
   color: white;
-  font-family: "MessinaMono",monospace;
   display: flex;
   justify-content: space-between;
+
+  a {
+    text-decoration: none;
+  }
 `;
 
 const Body = styled.div`
+  display: flex;
   align-items: center;
   background-color: rgb(16, 16, 16);
   color: white;
-  display: flex;
   flex-direction: column;
   font-size: 21px;
   min-height: calc(100vh - 70px);
-  font-family: "MessinaMono",monospace;
 `;
 
 const NetworkName = styled.span`
@@ -237,5 +239,6 @@ const Button = styled.button`
     outline: none;
   }
 `;
+
 
 export default App;

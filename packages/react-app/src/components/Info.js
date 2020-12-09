@@ -72,6 +72,7 @@ const Container = styled.div`{
     padding: 10px;
   }
   margin-top: 15px;
+  margin-bottom: 15px;
   font-weight: 100;
   font-size: 14px;
 }`

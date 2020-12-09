@@ -5,7 +5,6 @@ import { BigNumber } from "ethers";
 import { SwapInput } from "./SwapInput";
 import styled from "styled-components";
 
-
 const formattedBalanceOf = (token, ownerAddress) => {
   return token.contract.balanceOf(ownerAddress).then(balance => {
     return formatEther(balance)
@@ -163,6 +162,7 @@ const Container = styled.div`
 `;
 
 const PrimaryButton = styled.button`
+  font-family: inherit;
   font-size: 20px;
   font-weight: 500;
   padding: 18px;
@@ -170,7 +170,6 @@ const PrimaryButton = styled.button`
   cursor: pointer;
   color: white;
   background-color: #4967ff;
-  font-family: "MessinaMono",monospace;
   outline: none;
   border: 1px solid transparent;
   text-decoration: none;
