@@ -14,7 +14,7 @@ export const SwapInput = function({title, symbol, balance, displayMaxButton, val
     <Container>
       <InputHeader>
         <span>{title}</span>
-        <Balance>Balance: {roundedBalance}</Balance>
+        <Balance clickable={displayMaxButton} onClick={() => displayMaxButton && onValueChanged(balance)}>Balance: {roundedBalance}</Balance>
       </InputHeader>
       <InputBody>
         <Amount key={title} 
@@ -58,6 +58,7 @@ const InputHeader = styled.div`
 const Balance = styled.span`
   white-space: nowrap;
   overflow: hidden;
+  cursor: ${props => props.clickable ? "pointer" : "default"};
 `
 
 const InputBody = styled.div`
