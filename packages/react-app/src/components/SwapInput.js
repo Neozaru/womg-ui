@@ -93,6 +93,7 @@ const Symbol = styled.div`
 `
 
 const MaxButton = styled.button`
+  font-family: inherit;
   border-radius: 20px;
   border: 1px solid rgb(42, 41, 46) ;
   color: #35353f;

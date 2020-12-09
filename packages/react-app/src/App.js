@@ -219,6 +219,7 @@ const HeaderRight = styled.span`
 `
 
 const Button = styled.button`
+  font-family: inherit;
   display: flex;
   justify-content: center;
   align-items: center;
