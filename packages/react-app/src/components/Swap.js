@@ -22,6 +22,7 @@ const UNWRAP = 'unwrap';
 
 const ZERO_ALLOWANCE = BigNumber.from(0);
 const MAX_ALLOWANCE = BigNumber.from(2).pow(256).sub(1);
+const TOKEN_DECIMALS = 18; // Ideally taken from contract directly when/if this code gets generalized
 
 export const Swap = function({baseToken, wrapperToken, account}) {
 
@@ -66,15 +67,17 @@ export const Swap = function({baseToken, wrapperToken, account}) {
 
 
   function wrap(wrapAmount) {
-    const ethAmount = parseEther(`${wrapAmount}`);
-    console.log('deposit', wrapAmount, ethAmount);
+    const strAmount = `${wrapAmount.toFixed(TOKEN_DECIMALS)}`;
+    const ethAmount = parseEther(strAmount);
+    console.log('deposit', strAmount, ethAmount);
     const signedWrapperContract = wrapperToken.contract.connect(account.signer);
     signedWrapperContract.deposit(ethAmount).then(wrapUnwrapHandler);
   }
 
   function unwrap(unwrapAmount) {
-    const ethAmount = parseEther(`${unwrapAmount}`);
-    console.log('withdraw', unwrapAmount, ethAmount);
+    const strAmount = `${unwrapAmount.toFixed(TOKEN_DECIMALS)}`;
+    const ethAmount = parseEther(strAmount);
+    console.log('withdraw', strAmount, ethAmount);
     const signedWrapperContract = wrapperToken.contract.connect(account.signer);
     signedWrapperContract.withdraw(ethAmount).then(wrapUnwrapHandler);
   }
